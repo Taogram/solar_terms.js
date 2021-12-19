@@ -4,16 +4,15 @@
  * @Author: lax
  * @Date: 2021-12-18 19:10:07
  * @LastEditors: lax
- * @LastEditTime: 2021-12-19 13:14:11
+ * @LastEditTime: 2021-12-19 13:49:38
  * @FilePath: \tao_solar_terms\src\index.js
  */
 const VSOP87D = require("./data/vsop87d.json");
 const nutation = require("./data/nutation.js");
 const TIME = require("./tools/time");
-const JD2000 = TIME.JD.JD2000;
 
 class SolarTerms {
-	constructor(year, angle) {
+	constructor() {
 		this.RADIAN_ANGLE = 180 / Math.PI;
 	}
 
