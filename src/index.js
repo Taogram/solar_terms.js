@@ -4,7 +4,7 @@
  * @Author: lax
  * @Date: 2021-12-18 19:10:07
  * @LastEditors: lax
- * @LastEditTime: 2021-12-20 00:25:14
+ * @LastEditTime: 2021-12-20 00:55:57
  * @FilePath: \tao_solar_terms\src\index.js
  */
 const VSOP87D = require("./data/vsop87d.json");
@@ -16,7 +16,9 @@ const moment = require("moment");
 
 class SolarTerms {
 	constructor(p = {}) {
+		// 是否使用精确计算，处理浮点数误差
 		this.accurate = p.accurate === true;
+		// 样本繁简
 		this.DB = p.integrity ? VSOP87D : VSOP87D_SIMPLE;
 		this.DB = p.db ? p.db : this.DB;
 		this.RADIAN_ANGLE = 180 / Math.PI;
@@ -319,10 +321,10 @@ class SolarTerms {
 		m = m > 12 ? m - 12 : m;
 
 		if (angle % 15 === 0 && angle % 30 !== 0) {
-			return TIME.getJD(year, m, 1, 12, 0, 0);
+			return TIME.DT$JD(year, m, 1, 12, 0, 0);
 		}
 
-		return TIME.getJD(year, m, 29, 12, 0, 0);
+		return TIME.DT$JD(year, m, 29, 12, 0, 0);
 	}
 
 	getSolarTerm(year = this.year, angle = 0) {
@@ -353,9 +355,9 @@ class SolarTerms {
 			165, 180, 195, 210, 225, 240, 255, 270,
 		].map((angle) => {
 			const jd = this.getSolarTerm(year, angle);
-			const DT = TIME.JDToDate(jd);
+			const DT = TIME.JD$DT(jd);
 			const UT = moment(DT)
-				.subtract(~~TIME.DTUTOffset(jd), "s")
+				.subtract(~~TIME.offsetUT$DT(jd), "s")
 				.add(8, "h");
 			return UT;
 		});

@@ -4,7 +4,7 @@
  * @Author: lax
  * @Date: 2021-12-19 10:29:06
  * @LastEditors: lax
- * @LastEditTime: 2021-12-19 23:21:00
+ * @LastEditTime: 2021-12-20 00:52:03
  * @FilePath: \tao_solar_terms\src\tools\time.js
  */
 
@@ -30,9 +30,16 @@ function isGregorianDays(year, month, day) {
 }
 
 /**
- * 获取儒略日
+ * @description 获取儒略日Julian Day 参数单位为力学时
+ * @param {DT} _year
+ * @param {DT} _month
+ * @param {DT} date
+ * @param {DT} hour
+ * @param {DT} minute
+ * @param {DT} second
+ * @returns {JD} jd
  */
-function getJD(_year, _month, date, hour, minute, second) {
+function DT$JD(_year, _month, date, hour, minute, second) {
 	let B = -2;
 	let A = ~~(_year / 100);
 	let month = _month;
@@ -57,7 +64,7 @@ function getJD(_year, _month, date, hour, minute, second) {
 	return result;
 }
 
-function JDToDate(_JD) {
+function JD$DT(_JD) {
 	let JDF = _JD + 0.5;
 	let Z = Math.floor(JDF);
 	let F = JDF - Z;
@@ -92,15 +99,15 @@ function JDToDate(_JD) {
 	return new Date(y, m - 1, day, h, min, sec);
 }
 
-function DTUTOffset(jd) {
+function offsetUT$DT(jd) {
 	return -15 + ((jd - 2382148) * (jd - 2382148)) / 41048480;
 }
 
 module.exports = {
-	DTUTOffset,
+	offsetUT$DT,
 	isGregorianDays,
-	JDToDate,
-	getJD,
+	DT$JD,
+	JD$DT,
 	getDT,
 	JD,
 	JC,

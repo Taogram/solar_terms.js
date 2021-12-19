@@ -4,7 +4,7 @@
  * @Author: lax
  * @Date: 2021-12-18 16:45:26
  * @LastEditors: lax
- * @LastEditTime: 2021-12-18 19:09:22
+ * @LastEditTime: 2021-12-20 00:40:11
  * @FilePath: \tao_solar_terms\src\tools\vsop87.js
  */
 
@@ -22,7 +22,6 @@ function isTitle(l) {
 }
 
 function ready() {
-	console.log(origin);
 	fs.writeJSONSync(PATH("./../data/vsop87d.json"), origin);
 }
 
@@ -53,6 +52,7 @@ function ready() {
 	});
 
 	stream.on("close", () => {
+		// 最后一个集合数据单独添加
 		origin.r.push(use);
 		ready();
 	});
