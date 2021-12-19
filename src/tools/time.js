@@ -4,7 +4,7 @@
  * @Author: lax
  * @Date: 2021-12-19 10:29:06
  * @LastEditors: lax
- * @LastEditTime: 2021-12-19 12:40:46
+ * @LastEditTime: 2021-12-19 23:21:00
  * @FilePath: \tao_solar_terms\src\tools\time.js
  */
 
@@ -92,4 +92,16 @@ function JDToDate(_JD) {
 	return new Date(y, m - 1, day, h, min, sec);
 }
 
-module.exports = { isGregorianDays, JDToDate, getJD, getDT, JD, JC };
+function DTUTOffset(jd) {
+	return -15 + ((jd - 2382148) * (jd - 2382148)) / 41048480;
+}
+
+module.exports = {
+	DTUTOffset,
+	isGregorianDays,
+	JDToDate,
+	getJD,
+	getDT,
+	JD,
+	JC,
+};
