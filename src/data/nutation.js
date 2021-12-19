@@ -1,10 +1,10 @@
 /*
- * @Description: by《天体计算》
+ * @Description: by《天文算法》
  * @Version: 1.0.0
  * @Author: lax
  * @Date: 2021-12-18 22:44:06
  * @LastEditors: lax
- * @LastEditTime: 2021-12-18 23:04:22
+ * @LastEditTime: 2021-12-20 00:32:13
  * @FilePath: \tao_solar_terms\src\data\nutation.js
  */
 module.exports = [
