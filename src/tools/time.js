@@ -4,7 +4,7 @@
  * @Author: lax
  * @Date: 2021-12-19 10:29:06
  * @LastEditors: lax
- * @LastEditTime: 2021-12-24 19:53:37
+ * @LastEditTime: 2021-12-25 00:28:09
  * @FilePath: \tao_solar_terms\src\tools\time.js
  */
 
@@ -51,7 +51,7 @@ function isGregorianDays(year, month, day) {
  * @returns {JD} jd
  */
 function DT$JD(_year, _month, date, hour, minute, second) {
-	let B = -2;
+	let B = 0;
 	let A = ~~(_year / 100);
 	let month = _month;
 	let year = _year;
@@ -60,15 +60,23 @@ function DT$JD(_year, _month, date, hour, minute, second) {
 		year -= 1;
 	}
 	if (isGregorianDays(year, month, date)) {
-		B = -A + ~~(A / 4);
+		B = 2 - A + ~~(A / 4);
 	}
 
 	const result =
-		~~(CALENDAR.a * year) +
+		/**
+		 * 由于4712可能存在负数运算，而对于负数的取整可能存在编程语言的误差。
+		 * 故将历元推到前一个置闰年即-4716年以避免对负数的取整运算，多加了4年，则式尾中减4年
+		 */
+		~~(CALENDAR.a * (year + 4716)) +
+		/**
+		 * 考虑计算机对浮点数计算精度的问题，由于对十进制的表示和计算是以二进制进行的，无法得到精确值。
+		 * 故以30.6001替代30.6避免出现计算误差。
+		 */
 		~~(30.6001 * (month + 1)) +
 		B +
-		1720996.5 +
 		date +
+		-1524.5 +
 		hour / 24.0 +
 		minute / 1440.0 +
 		second / 86400.0;
