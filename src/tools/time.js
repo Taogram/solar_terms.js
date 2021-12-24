@@ -4,9 +4,20 @@
  * @Author: lax
  * @Date: 2021-12-19 10:29:06
  * @LastEditors: lax
- * @LastEditTime: 2021-12-20 00:52:03
+ * @LastEditTime: 2021-12-24 19:53:37
  * @FilePath: \tao_solar_terms\src\tools\time.js
  */
+
+const CALENDAR = {
+	/**
+	 * 儒略年（符号：a）是天文学中测量时间的测量单位.
+	 * 定义的数值为365.25天，每天为国际单位的86400秒，总数为31,557,600秒。
+	 * 这个数值是西方社会早期使用儒略历中年的平均长度，并且是这个单位的名称。
+	 * 然而，因为儒略年只是测量时间的单位，并没有针对特定的日期，因此儒略年
+	 * 与儒略历或任何其他的历都没有关联，也与许多其他形式年的定义没有关联。
+	 */
+	a: 365.25,
+};
 
 const JD = {
 	JD2000: 2451545,
@@ -53,7 +64,7 @@ function DT$JD(_year, _month, date, hour, minute, second) {
 	}
 
 	const result =
-		~~(365.25 * year) +
+		~~(CALENDAR.a * year) +
 		~~(30.6001 * (month + 1)) +
 		B +
 		1720996.5 +

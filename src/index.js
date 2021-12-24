@@ -4,7 +4,7 @@
  * @Author: lax
  * @Date: 2021-12-18 19:10:07
  * @LastEditors: lax
- * @LastEditTime: 2021-12-20 14:52:43
+ * @LastEditTime: 2021-12-24 19:31:47
  * @FilePath: \tao_solar_terms\src\index.js
  */
 const VSOP87D = require("./data/vsop87d.json");
@@ -21,7 +21,6 @@ class SolarTerms {
 		// 样本繁简
 		this.DB = p.integrity ? VSOP87D : VSOP87D_SIMPLE;
 		this.DB = p.db ? p.db : this.DB;
-		Ecliptic.setOptions();
 	}
 
 	getBaseSection(year = this.year, angle = 0) {
