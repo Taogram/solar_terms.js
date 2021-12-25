@@ -4,7 +4,7 @@
  * @Author: lax
  * @Date: 2021-12-19 10:29:06
  * @LastEditors: lax
- * @LastEditTime: 2021-12-25 00:28:09
+ * @LastEditTime: 2021-12-25 14:56:49
  * @FilePath: \tao_solar_terms\src\tools\time.js
  */
 
@@ -30,6 +30,13 @@ function getDT(jd) {
 	return (jd - JD.JD2000) / 365250;
 }
 
+/**
+ * 是否是格里高利历
+ * @param {*} year
+ * @param {*} month
+ * @param {*} day
+ * @returns
+ */
 function isGregorianDays(year, month, day) {
 	if (year < 1582) return false;
 
