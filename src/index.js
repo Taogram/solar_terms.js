@@ -4,7 +4,7 @@
  * @Author: lax
  * @Date: 2021-12-18 19:10:07
  * @LastEditors: lax
- * @LastEditTime: 2021-12-24 19:31:47
+ * @LastEditTime: 2021-12-29 19:45:31
  * @FilePath: \tao_solar_terms\src\index.js
  */
 const VSOP87D = require("./data/vsop87d.json");
@@ -14,6 +14,9 @@ const TIME = require("./tools/time");
 const moment = require("moment");
 const Ecliptic = require("./ecliptic");
 
+/**
+ * 二十四节气
+ */
 class SolarTerms {
 	constructor(p = {}) {
 		// 是否使用精确计算，处理浮点数误差
@@ -34,7 +37,7 @@ class SolarTerms {
 		return TIME.DT$JD(year, m, 29, 12, 0, 0);
 	}
 
-	getSolarTerm(year = this.year, angle = 0) {
+	getSolarTerms(year = this.year, angle = 0) {
 		const FUNC = this.accurate ? "$" : "";
 		let JD0 = 0;
 		let stDegree = 0;
@@ -56,12 +59,12 @@ class SolarTerms {
 		return JD1;
 	}
 
-	getSolarTerms(year) {
+	getSolarTermsAll(year) {
 		return [
 			285, 300, 315, 330, 345, 0, 15, 30, 45, 60, 75, 90, 105, 120, 135, 150,
 			165, 180, 195, 210, 225, 240, 255, 270,
 		].map((angle) => {
-			const jd = this.getSolarTerm(year, angle);
+			const jd = this.getSolarTerms(year, angle);
 			const DT = TIME.JD$DT(jd);
 			const UT = moment(DT)
 				.subtract(~~TIME.offsetUT$DT(jd), "s")
