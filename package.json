@@ -1,16 +1,16 @@
 {
   "name": "tao_solar_terms",
   "version": "0.0.0",
-  "private": true,
+  "private": false,
   "scripts": {
+    "vsop87d": "node tools/vsop87d.js",
     "test:unit": "jest --verbose"
   },
   "dependencies": {
-    "decimal.js": "^10.3.1",
-    "fs-extra": "^10.0.0",
-    "moment": "^2.29.1"
   },
   "devDependencies": {
+    "fs-extra": "^10.0.0",
+    "moment": "^2.29.1",
     "@babel/core": "^7.15.8",
     "@babel/eslint-parser": "^7.15.8",
     "babel-jest": "^27.2.5",

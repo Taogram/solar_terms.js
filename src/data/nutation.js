@@ -1,10 +1,10 @@
 /*
- * @Description: by《天文算法》
+ * @Description: nutation by《Astronomical.Algorithms》(章动表，自《天文算法》)
  * @Version: 1.0.0
  * @Author: lax
  * @Date: 2021-12-18 22:44:06
  * @LastEditors: lax
- * @LastEditTime: 2021-12-20 00:32:13
+ * @LastEditTime: 2022-02-26 14:12:43
  * @FilePath: \tao_solar_terms\src\data\nutation.js
  */
 module.exports = [
