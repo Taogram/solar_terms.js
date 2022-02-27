@@ -4,9 +4,11 @@
  * @Author: lax
  * @Date: 2021-12-18 22:32:00
  * @LastEditors: lax
- * @LastEditTime: 2022-01-03 13:43:25
+ * @LastEditTime: 2022-02-27 14:50:31
  * @FilePath: \tao_solar_terms\test\index.js
  */
+
+// TODO unit test
 const moment = require("moment");
 const TIME = require("./../src/tools/time");
 const SolarTerms = require("./../src/index");
