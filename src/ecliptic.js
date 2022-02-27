@@ -4,7 +4,7 @@
  * @Author: lax
  * @Date: 2021-12-20 13:33:23
  * @LastEditors: lax
- * @LastEditTime: 2022-02-26 14:06:11
+ * @LastEditTime: 2022-02-27 14:42:14
  * @FilePath: \tao_solar_terms\src\ecliptic.js
  */
 
@@ -14,9 +14,9 @@ const TIME = require("./tools/time");
 const Nutation = require("./nutation");
 
 class Ecliptic {
-	constructor(jd, p) {
+	constructor(jd, p = {}) {
 		this.dt = TIME.getDT(jd);
-		p && this.setOptions(p);
+		this.setOptions(p);
 	}
 
 	setOptions(p) {

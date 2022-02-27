@@ -30,6 +30,10 @@ function getDT(jd) {
 	return (jd - JD.JD2000) / 365250;
 }
 
+function getJulianCentury(jde) {
+	return (jde - JD.JD2000) / (CALENDAR.a * 100);
+}
+
 /**
  * 是否是格里高利历
  * @param {*} year
@@ -134,6 +138,7 @@ module.exports = {
 	isGregorianDays,
 	DT$JD,
 	JD$DT,
+	getJulianCentury,
 	getDT,
 	JD,
 	JC,

@@ -4,12 +4,9 @@
  * @Author: lax
  * @Date: 2021-12-18 19:10:07
  * @LastEditors: lax
- * @LastEditTime: 2021-12-29 19:45:31
+ * @LastEditTime: 2022-02-27 14:49:33
  * @FilePath: \tao_solar_terms\src\index.js
  */
-const VSOP87D = require("./data/vsop87d.json");
-const VSOP87D_SIMPLE = require("./data/vsop87d-simple.js");
-const Decimal = require("decimal.js");
 const TIME = require("./tools/time");
 const moment = require("moment");
 const Ecliptic = require("./ecliptic");
@@ -19,11 +16,14 @@ const Ecliptic = require("./ecliptic");
  */
 class SolarTerms {
 	constructor(p = {}) {
-		// 是否使用精确计算，处理浮点数误差
-		this.accurate = p.accurate === true;
 		// 样本繁简
-		this.DB = p.integrity ? VSOP87D : VSOP87D_SIMPLE;
-		this.DB = p.db ? p.db : this.DB;
+		this.integrity = p.integrity;
+		this.db = p.db;
+		this.option = this.getOptions();
+	}
+
+	getOptions() {
+		return { integrity: this.integrity, db: this.db };
 	}
 
 	getBaseSection(year = this.year, angle = 0) {
@@ -38,7 +38,6 @@ class SolarTerms {
 	}
 
 	getSolarTerms(year = this.year, angle = 0) {
-		const FUNC = this.accurate ? "$" : "";
 		let JD0 = 0;
 		let stDegree = 0;
 		let stDegreep = 0;
@@ -47,11 +46,12 @@ class SolarTerms {
 
 		do {
 			JD0 = JD1;
-			stDegree = new Ecliptic(JD0)[`${FUNC}getSunEclipticLongitude`]() - angle;
+			stDegree =
+				new Ecliptic(JD0, this.option).getSunEclipticLongitude() - angle;
 			stDegree = angle === 0 && stDegree > 345.0 ? stDegree - 360.0 : stDegree;
 			stDegreep =
-				(new Ecliptic(JD0 + 0.000005)[`${FUNC}getSunEclipticLongitude`]() -
-					new Ecliptic(JD0 - 0.000005)[`${FUNC}getSunEclipticLongitude`]()) /
+				(new Ecliptic(JD0 + 0.000005, this.option).getSunEclipticLongitude() -
+					new Ecliptic(JD0 - 0.000005, this.option).getSunEclipticLongitude()) /
 				0.00001;
 			JD1 = JD0 - stDegree / stDegreep;
 		} while (Math.abs(JD1 - JD0) > 0.0000001);

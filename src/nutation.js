@@ -4,17 +4,18 @@
  * @Author: lax
  * @Date: 2022-02-26 13:39:00
  * @LastEditors: lax
- * @LastEditTime: 2022-02-26 14:02:19
+ * @LastEditTime: 2022-02-27 14:41:23
  * @FilePath: \tao_solar_terms\src\nutation.js
  */
 const nutation = require("./data/nutation.js");
+const TIME = require("./tools/time");
 
 /**
- * @class 章动修正
+ * @class 章动
  */
 class Nutation {
-	constructor(T, p = {}) {
-		this.T = T;
+	constructor(JDE, p = {}) {
+		this.T = TIME.getJulianCentury(JDE);
 		this.D = this.getD();
 		this.M = this.getM();
 		this._M = this.get_M();
@@ -29,15 +30,17 @@ class Nutation {
 		let result = 0;
 		this.nutation.map((row) => {
 			let argument =
-				this.M * row[0] +
-				this._M * row[1] +
-				this.D * row[2] +
+				this.D * row[0] +
+				this.M * row[1] +
+				this._M * row[2] +
 				this.F * row[3] +
 				this.O * row[4];
+			// TODO 角度修正精度问题
 			argument /= this.RADIAN_ANGLE;
 
 			result += (row[5] + row[6] * T) * Math.sin(argument);
 		});
+		// TODO 角度回溯
 		return (result * this.coefficient) / 3600;
 	}
 
