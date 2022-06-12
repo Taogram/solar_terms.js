@@ -4,7 +4,7 @@
  * @Author: lax
  * @Date: 2021-12-19 10:29:06
  * @LastEditors: lax
- * @LastEditTime: 2021-12-25 14:56:49
+ * @LastEditTime: 2022-06-12 10:02:35
  * @FilePath: \tao_solar_terms\src\tools\time.js
  */
 
@@ -20,7 +20,7 @@ const CALENDAR = {
 };
 
 const JD = {
-	JD2000: 2451545,
+	JD2000: 2451545.0,
 };
 const JC = {
 	JC_BASE: 2299161,
