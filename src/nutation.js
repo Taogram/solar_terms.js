@@ -4,7 +4,7 @@
  * @Author: lax
  * @Date: 2022-02-26 13:39:00
  * @LastEditors: lax
- * @LastEditTime: 2022-02-27 14:41:23
+ * @LastEditTime: 2022-06-29 23:40:58
  * @FilePath: \tao_solar_terms\src\nutation.js
  */
 const nutation = require("./data/nutation.js");
@@ -27,20 +27,13 @@ class Nutation {
 	}
 
 	offset(T = this.T) {
-		let result = 0;
-		this.nutation.map((row) => {
+		const result = this.nutation.reduce((acc, [D, M, _M, F, O, sin1, sin2]) => {
 			let argument =
-				this.D * row[0] +
-				this.M * row[1] +
-				this._M * row[2] +
-				this.F * row[3] +
-				this.O * row[4];
-			// TODO 角度修正精度问题
+				this.D * D + this.M * M + this._M * _M + this.F * F + this.O * O;
 			argument /= this.RADIAN_ANGLE;
 
-			result += (row[5] + row[6] * T) * Math.sin(argument);
-		});
-		// TODO 角度回溯
+			return acc + (sin1 + sin2 * T) * Math.sin(argument);
+		}, 0);
 		return (result * this.coefficient) / 3600;
 	}
 
