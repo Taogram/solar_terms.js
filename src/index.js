@@ -2,9 +2,9 @@
  * @Description:
  * @Version: 1.0.0
  * @Author: lax
- * @Date: 2021-12-18 19:10:07
+ * @Date: 2022-06-23 20:15:00
  * @LastEditors: lax
- * @LastEditTime: 2022-02-27 14:49:33
+ * @LastEditTime: 2022-08-01 21:46:22
  * @FilePath: \tao_solar_terms\src\index.js
  */
 const TIME = require("./tools/time");

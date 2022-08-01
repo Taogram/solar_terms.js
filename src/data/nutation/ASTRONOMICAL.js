@@ -4,8 +4,8 @@
  * @Author: lax
  * @Date: 2021-12-18 22:44:06
  * @LastEditors: lax
- * @LastEditTime: 2022-02-26 14:12:43
- * @FilePath: \tao_solar_terms\src\data\nutation.js
+ * @LastEditTime: 2022-08-01 22:46:46
+ * @FilePath: \tao_solar_terms\src\data\nutation\ASTRONOMICAL.js
  */
 module.exports = [
 	[0, 0, 0, 0, 1, -171996, -174.2, 92025, 8.9],
