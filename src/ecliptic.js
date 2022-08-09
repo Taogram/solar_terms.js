@@ -4,14 +4,14 @@
  * @Author: lax
  * @Date: 2021-12-20 13:33:23
  * @LastEditors: lax
- * @LastEditTime: 2022-06-12 09:51:38
+ * @LastEditTime: 2022-08-09 11:00:45
  * @FilePath: \tao_solar_terms\src\ecliptic.js
  */
 
 const VSOP87D = require("./data/vsop87d.json");
 const VSOP87D_SIMPLE = require("./data/vsop87d-simple.js");
 const TIME = require("./tools/time");
-const Nutation = require("./nutation");
+const Nutation = require("nutation.js");
 
 class Ecliptic {
 	constructor(jd, p = {}) {
@@ -38,8 +38,8 @@ class Ecliptic {
 	 * @returns {Number} num
 	 */
 	calcPeriodicTerm(collection, dt = this.dt) {
-		const val = collection.reduce((acc, next) => {
-			acc += Number(next[0]) * Math.cos(Number(next[1]) + Number(next[2]) * dt);
+		const val = collection.reduce((acc, [A, B, C]) => {
+			acc += Number(A) * Math.cos(Number(B) + Number(C) * dt);
 			return acc;
 		}, 0);
 		return val;
@@ -72,15 +72,6 @@ class Ecliptic {
 	}
 
 	/**
-	 * 计算地心黄经
-	 * @param {sunLongitude} 日心黄经
-	 * @returns {earLongitude} l
-	 */
-	calcEarEclipticLongitude(sun = this.calcSunEclipticLongitude()) {
-		return this.circle(sun * this.RADIAN_ANGLE + 180);
-	}
-
-	/**
 	 * 计算日心黄纬
 	 * @param {*} dt
 	 * @returns {sunLatitude} b
@@ -88,15 +79,6 @@ class Ecliptic {
 	calcSunEclipticLatitude(dt = this.dt) {
 		const b = this.calcEclipticBy(this.DB.b, dt);
 		return b;
-	}
-
-	/**
-	 * 计算地心黄纬
-	 * @param {sunLatitude} 日心黄纬
-	 * @returns {earLatitude} b
-	 */
-	calcEarEclipticLatitude(sun = this.calcSunEclipticLatitude()) {
-		return -(sun * this.RADIAN_ANGLE);
 	}
 
 	/**
@@ -110,11 +92,29 @@ class Ecliptic {
 	}
 
 	/**
+	 * 计算地心黄经
+	 * @param {sunLongitude} 日心黄经
+	 * @returns {earLongitude} l
+	 */
+	calcEarEclipticLongitude(sun = this.calcSunEclipticLongitude()) {
+		return this.circle(sun * this.RADIAN_ANGLE + 180);
+	}
+
+	/**
+	 * 计算地心黄纬
+	 * @param {sunLatitude} 日心黄纬
+	 * @returns {earLatitude} b
+	 */
+	calcEarEclipticLatitude(sun = this.calcSunEclipticLatitude()) {
+		return -(sun * this.RADIAN_ANGLE);
+	}
+
+	/**
 	 *VSOP87->TF5坐标系 地心黄经
 	 * @param {*} dt
 	 * @returns
 	 */
-	TF5EclipticLongitudeOffset(dt = this.dt) {
+	FK5EclipticLongitudeOffset(dt = this.dt) {
 		const T = dt * 10;
 		const L = this.calcEarEclipticLongitude(dt);
 		const B = this.calcEarEclipticLatitude(dt);
@@ -124,7 +124,7 @@ class Ecliptic {
 			(-0.09033 +
 				0.03916 *
 					(Math.cos(dash) + Math.sin(dash)) *
-					Math.tan((B * 3600) / this.RADIAN_ANGLE)) /
+					Math.tan(B / this.RADIAN_ANGLE)) /
 			3600.0
 		);
 	}
@@ -149,7 +149,7 @@ class Ecliptic {
 	 */
 	earLongitudeNutationOffset(dt = this.dt) {
 		const T = dt * 10;
-		return new Nutation(T).offset();
+		return new Nutation(T).longitude();
 	}
 
 	/**
