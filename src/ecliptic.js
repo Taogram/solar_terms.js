@@ -4,7 +4,7 @@
  * @Author: lax
  * @Date: 2021-12-20 13:33:23
  * @LastEditors: lax
- * @LastEditTime: 2022-08-09 11:00:45
+ * @LastEditTime: 2022-08-09 15:21:56
  * @FilePath: \tao_solar_terms\src\ecliptic.js
  */
 
@@ -134,7 +134,7 @@ class Ecliptic {
 	 * @param {*} dt
 	 * @returns
 	 */
-	TF5SunEclipticLatitudeOffset(dt = this.dt) {
+	FK5SunEclipticLatitudeOffset(dt = this.dt) {
 		const T = dt * 10;
 		const L = this.calcEarEclipticLongitude(dt);
 		let dash = L - 1.397 * T - 0.00031 * T * T;
@@ -160,9 +160,10 @@ class Ecliptic {
 	getSunEclipticLongitude() {
 		let l = this.calcEarEclipticLongitude();
 		// ->TF5
-		l += this.TF5EclipticLongitudeOffset();
+		l += this.FK5EclipticLongitudeOffset();
 		// ->nutation
 		l += this.earLongitudeNutationOffset();
+		// 光行差
 		l -= 20.4898 / this.sunEarthRadius() / 3600;
 		return l;
 	}
