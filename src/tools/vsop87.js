@@ -4,7 +4,7 @@
  * @Author: lax
  * @Date: 2021-12-18 16:45:26
  * @LastEditors: lax
- * @LastEditTime: 2021-12-29 19:51:27
+ * @LastEditTime: 2022-08-09 23:21:30
  * @FilePath: \tao_solar_terms\src\tools\vsop87.js
  */
 
@@ -22,11 +22,11 @@ function isTitle(l) {
 }
 
 function ready() {
-	fs.writeJSONSync(PATH("./../data/vsop87d.json"), origin);
+	fs.writeJSONSync(PATH("./../data/vsop87d.ven.json"), origin);
 }
 
 (async () => {
-	const input = fs.createReadStream(PATH("./../data/VSOP87D.ear"));
+	const input = fs.createReadStream(PATH("./../data/VSOP87D.ven"));
 	// line stream
 	const stream = readline.createInterface({ input });
 	let use;

@@ -4,7 +4,7 @@
  * @Author: lax
  * @Date: 2022-06-23 20:15:00
  * @LastEditors: lax
- * @LastEditTime: 2022-08-01 21:46:22
+ * @LastEditTime: 2022-08-09 23:55:06
  * @FilePath: \tao_solar_terms\src\index.js
  */
 const TIME = require("./tools/time");
@@ -16,14 +16,11 @@ const Ecliptic = require("./ecliptic");
  */
 class SolarTerms {
 	constructor(p = {}) {
-		// 样本繁简
-		this.integrity = p.integrity;
-		this.db = p.db;
-		this.option = this.getOptions();
+		this.eOp = this.getEclipticOptions(p);
 	}
 
-	getOptions() {
-		return { integrity: this.integrity, db: this.db };
+	getEclipticOptions({ integrity, db }) {
+		return { integrity, db };
 	}
 
 	getBaseSection(year = this.year, angle = 0) {
@@ -46,12 +43,11 @@ class SolarTerms {
 
 		do {
 			JD0 = JD1;
-			stDegree =
-				new Ecliptic(JD0, this.option).getSunEclipticLongitude() - angle;
+			stDegree = new Ecliptic(JD0, this.eOp).getSunEclipticLongitude() - angle;
 			stDegree = angle === 0 && stDegree > 345.0 ? stDegree - 360.0 : stDegree;
 			stDegreep =
-				(new Ecliptic(JD0 + 0.000005, this.option).getSunEclipticLongitude() -
-					new Ecliptic(JD0 - 0.000005, this.option).getSunEclipticLongitude()) /
+				(new Ecliptic(JD0 + 0.000005, this.eOp).getSunEclipticLongitude() -
+					new Ecliptic(JD0 - 0.000005, this.eOp).getSunEclipticLongitude()) /
 				0.00001;
 			JD1 = JD0 - stDegree / stDegreep;
 		} while (Math.abs(JD1 - JD0) > 0.0000001);

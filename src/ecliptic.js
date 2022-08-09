@@ -4,12 +4,12 @@
  * @Author: lax
  * @Date: 2021-12-20 13:33:23
  * @LastEditors: lax
- * @LastEditTime: 2022-08-09 15:21:56
+ * @LastEditTime: 2022-08-09 23:41:54
  * @FilePath: \tao_solar_terms\src\ecliptic.js
  */
 
-const VSOP87D = require("./data/vsop87d.json");
-const VSOP87D_SIMPLE = require("./data/vsop87d-simple.js");
+const VSOP87D = require("./data/json/vsop87d.json");
+const VSOP87D_SIMPLE = require("./data/json/vsop87d-simple.js");
 const TIME = require("./tools/time");
 const Nutation = require("nutation.js");
 
@@ -82,11 +82,11 @@ class Ecliptic {
 	}
 
 	/**
-	 * 太阳到地球的距离
+	 * 太阳到行星的距离
 	 * @param {*} dt
 	 * @returns
 	 */
-	sunEarthRadius(dt = this.dt) {
+	sunPlanetRadius(dt = this.dt) {
 		const r = this.calcEclipticBy(this.DB.r, dt);
 		return r;
 	}
@@ -164,7 +164,7 @@ class Ecliptic {
 		// ->nutation
 		l += this.earLongitudeNutationOffset();
 		// 光行差
-		l -= 20.4898 / this.sunEarthRadius() / 3600;
+		l -= 20.4898 / this.sunPlanetRadius() / 3600;
 		return l;
 	}
 }
