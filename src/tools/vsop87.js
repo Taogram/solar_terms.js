@@ -4,7 +4,7 @@
  * @Author: lax
  * @Date: 2021-12-18 16:45:26
  * @LastEditors: lax
- * @LastEditTime: 2022-08-09 23:21:30
+ * @LastEditTime: 2022-08-25 20:08:46
  * @FilePath: \tao_solar_terms\src\tools\vsop87.js
  */
 
@@ -21,31 +21,32 @@ function isTitle(l) {
 	return l.indexOf("VSOP87") === 1;
 }
 
+function LBR(l) {
+	const str = l.slice(l.indexOf("VARIABLE"), l.indexOf("(LBR)"));
+	if (str.includes("1")) return "l";
+	if (str.includes("2")) return "b";
+	if (str.includes("3")) return "r";
+}
+
 function ready() {
-	fs.writeJSONSync(PATH("./../data/vsop87d.ven.json"), origin);
+	fs.writeJSONSync(PATH("./../data/json/vsop87d.ven.json"), origin);
 }
 
 (async () => {
-	const input = fs.createReadStream(PATH("./../data/VSOP87D.ven"));
+	const input = fs.createReadStream(PATH("./../data/lib/VSOP87D.ven"));
 	// line stream
 	const stream = readline.createInterface({ input });
 	let use;
-	let index = 0;
+	let lbr = "";
 	stream.on("line", (line) => {
 		if (isTitle(line)) {
-			if (index > 0 && index <= 6) {
-				origin.l.push(use);
-			}
-			if (index > 6 && index <= 11) {
-				origin.b.push(use);
-			}
-			if (index > 11) {
-				origin.r.push(use);
-			}
+			if (lbr === "l") origin.l.push(use);
+			if (lbr === "b") origin.b.push(use);
+			if (lbr === "r") origin.r.push(use);
 			use = [];
-			index++;
+			lbr = LBR(line);
 		} else {
-			// 后三组数据
+			// 只取后三组数据
 			const _line = line.slice(79);
 			const data = _line.trim().split(/\s+/);
 			use.push(data);
