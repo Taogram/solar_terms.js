@@ -4,17 +4,18 @@
  * @Author: lax
  * @Date: 2021-12-20 13:33:23
  * @LastEditors: lax
- * @LastEditTime: 2022-08-09 23:41:54
+ * @LastEditTime: 2022-08-25 22:14:38
  * @FilePath: \tao_solar_terms\src\ecliptic.js
  */
 
-const VSOP87D = require("./data/json/vsop87d.json");
-const VSOP87D_SIMPLE = require("./data/json/vsop87d-simple.js");
-const TIME = require("./tools/time");
+const VSOP87D = require("@/data/json/vsop87d.ear.json");
+const VSOP87D_SIMPLE = require("@/data/json/vsop87d-simple.ear.js");
+const TIME = require("@/tools/time");
 const Nutation = require("nutation.js");
 
 class Ecliptic {
 	constructor(jd, p = {}) {
+		this.jd = jd;
 		this.dt = TIME.getDT(jd);
 		this.setOptions(p);
 	}
@@ -106,7 +107,15 @@ class Ecliptic {
 	 * @returns {earLatitude} b
 	 */
 	calcEarEclipticLatitude(sun = this.calcSunEclipticLatitude()) {
-		return -(sun * this.RADIAN_ANGLE);
+		return this.circle(-(sun * this.RADIAN_ANGLE));
+	}
+
+	FK5EclipticL(dt = this.dt) {
+		const T = dt * 10;
+		const L = this.calcSunEclipticLongitude(dt);
+		let dash = L - T * 1.397 - 0.00031 * T * T;
+		dash /= this.RADIAN_ANGLE;
+		return dash;
 	}
 
 	/**
@@ -115,11 +124,8 @@ class Ecliptic {
 	 * @returns
 	 */
 	FK5EclipticLongitudeOffset(dt = this.dt) {
-		const T = dt * 10;
-		const L = this.calcEarEclipticLongitude(dt);
 		const B = this.calcEarEclipticLatitude(dt);
-		let dash = L - T * 1.397 - 0.00031 * T * T;
-		dash /= this.RADIAN_ANGLE;
+		const dash = this.FK5EclipticL(dt);
 		return (
 			(-0.09033 +
 				0.03916 *
@@ -134,22 +140,27 @@ class Ecliptic {
 	 * @param {*} dt
 	 * @returns
 	 */
-	FK5SunEclipticLatitudeOffset(dt = this.dt) {
-		const T = dt * 10;
-		const L = this.calcEarEclipticLongitude(dt);
-		let dash = L - 1.397 * T - 0.00031 * T * T;
-		dash /= this.RADIAN_ANGLE;
+	FK5EclipticLatitudeOffset(dt = this.dt) {
+		const dash = this.FK5EclipticL(dt);
 		return (0.03916 * (Math.cos(dash) - Math.sin(dash))) / 3600.0;
 	}
 
 	/**
-	 * 地球章动修正
+	 * 章动修正
 	 * @param {*} dt
 	 * @returns
 	 */
-	earLongitudeNutationOffset(dt = this.dt) {
-		const T = dt * 10;
-		return new Nutation(T).longitude();
+	longitudeNutationOffset(jde = this.jd) {
+		return new Nutation(jde).longitude();
+	}
+
+	/**
+	 * 章动修正
+	 * @param {*} dt
+	 * @returns
+	 */
+	latitudeNutationOffset(jde = this.jd) {
+		return new Nutation(jde).obliquity();
 	}
 
 	/**
@@ -162,9 +173,9 @@ class Ecliptic {
 		// ->TF5
 		l += this.FK5EclipticLongitudeOffset();
 		// ->nutation
-		l += this.earLongitudeNutationOffset();
+		l += this.longitudeNutationOffset();
 		// 光行差
-		l -= 20.4898 / this.sunPlanetRadius() / 3600;
+		l -= 20.4898 / this.sunPlanetRadius() / 3600.0;
 		return l;
 	}
 }
