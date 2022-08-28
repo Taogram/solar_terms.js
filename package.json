@@ -1,11 +1,23 @@
 {
   "name": "solar_terms.js",
+  "description": "solar_terms by js",
   "version": "0.0.0",
   "private": false,
+  "license": "MIT",
+  "author": {
+    "name": "lax",
+    "email": "1546356935@qq.com"
+  },
   "scripts": {
+    "lib": "babel src/ -d dist/",
     "vsop87d": "node tools/vsop87d.js",
     "test:unit": "jest --verbose"
   },
+  "files": [
+    "dist/",
+    "readme.md"
+  ],
+  "main": "dist/index.js",
   "dependencies": {
     "julian.js": "^1.0.1",
     "nutation.js": "^0.3.0"
@@ -25,5 +37,10 @@
     "jest": "^26.6.3",
     "moment": "^2.29.1",
     "prettier": "^2.2.1"
+  },
+  "homepage": "https://github.com/Taogram/solar_terms.js.git",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Taogram/solar_terms.js.git"
   }
 }
