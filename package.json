@@ -1,7 +1,7 @@
 {
   "name": "solar_terms.js",
   "description": "solar_terms by js",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": false,
   "license": "MIT",
   "author": {
@@ -19,7 +19,7 @@
   ],
   "main": "dist/index.js",
   "dependencies": {
-    "julian.js": "^1.0.1",
+    "julian.js": "^1.0.3",
     "nutation.js": "^0.3.0"
   },
   "devDependencies": {
