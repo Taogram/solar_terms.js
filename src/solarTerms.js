@@ -4,7 +4,7 @@
  * @Author: lax
  * @Date: 2022-06-23 20:15:00
  * @LastEditors: lax
- * @LastEditTime: 2022-08-25 23:18:45
+ * @LastEditTime: 2023-04-09 22:28:26
  * @FilePath: \tao_solar_terms\src\solarTerms.js
  */
 const Julian = require("julian.js");
@@ -58,7 +58,6 @@ class SolarTerms {
 		].map((angle) => {
 			const jd = this.getSolarTerms(year, angle);
 			const DT = Julian.JD$UTC(jd);
-			DT.setHours(DT.getHours() + 8);
 			return DT;
 		});
 	}
