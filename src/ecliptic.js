@@ -4,7 +4,7 @@
  * @Author: lax
  * @Date: 2021-12-20 13:33:23
  * @LastEditors: lax
- * @LastEditTime: 2022-08-25 22:14:38
+ * @LastEditTime: 2023-04-25 00:26:42
  * @FilePath: \tao_solar_terms\src\ecliptic.js
  */
 
@@ -40,7 +40,7 @@ class Ecliptic {
 	 */
 	calcPeriodicTerm(collection, dt = this.dt) {
 		const val = collection.reduce((acc, [A, B, C]) => {
-			acc += Number(A) * Math.cos(Number(B) + Number(C) * dt);
+			acc += parseFloat(A) * Math.cos(parseFloat(B) + parseFloat(C) * dt);
 			return acc;
 		}, 0);
 		return val;
@@ -53,12 +53,13 @@ class Ecliptic {
 	 */
 	calcEclipticBy(arr, dt = this.dt) {
 		let X = arr
-			.map((each) => {
-				return this.calcPeriodicTerm(each, dt);
+			.map((XIndex) => {
+				return this.calcPeriodicTerm(XIndex, dt);
 			})
 			.reduceRight((acc, next) => {
 				return acc * dt + next;
 			}, 0);
+
 		return X;
 	}
 
