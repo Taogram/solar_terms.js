@@ -4,7 +4,7 @@
  * @Author: lax
  * @Date: 2022-06-12 09:44:10
  * @LastEditors: lax
- * @LastEditTime: 2023-04-25 21:33:38
+ * @LastEditTime: 2023-04-26 19:27:16
  * @FilePath: \tao_solar_terms\test\ecliptic.spec.js
  */
 const Ecliptic = require("@/ecliptic.js");
@@ -49,6 +49,9 @@ describe("《Astronomical.Algorithms》24.b jde=2448908.5 ear", () => {
 	});
 });
 
+/**
+ * test for longitude/latitude/radius
+ */
 describe("neoprogrammics.com/vsop87 VSOP87D EARTH TEST(FULL DATA)", () => {
 	describe("jde = 2451545", () => {
 		const jde = 2451545;
