@@ -20,7 +20,7 @@
   "main": "dist/index.js",
   "dependencies": {
     "julian.js": "^1.1.0",
-    "nutation.js": "^0.3.0"
+    "nutation.js": "^0.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.15.8",

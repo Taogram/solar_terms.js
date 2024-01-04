@@ -4,7 +4,7 @@
  * @Author: lax
  * @Date: 2021-12-20 13:33:23
  * @LastEditors: lax
- * @LastEditTime: 2023-04-25 00:26:42
+ * @LastEditTime: 2023-12-30 07:43:17
  * @FilePath: \tao_solar_terms\src\ecliptic.js
  */
 
@@ -17,13 +17,15 @@ class Ecliptic {
 	constructor(jd, p = {}) {
 		this.jd = jd;
 		this.dt = TIME.getDT(jd);
-		this.setOptions(p);
+		this.DB =
+			p.db === undefined ? (p.integrity ? VSOP87D : VSOP87D_SIMPLE) : p.db;
+		this.nutOptions = this.getNutationOptions(p.nutation);
+		const { iau, full } = this.nutOptions;
+		this.nutation = new Nutation(this.jd, iau, full);
 	}
 
-	setOptions(p) {
-		// 样本繁简
-		this.DB = p.integrity ? VSOP87D : VSOP87D_SIMPLE;
-		this.DB = p.db ? p.db : this.DB;
+	getNutationOptions(options = {}) {
+		return Object.assign({}, {}, options);
 	}
 
 	circle(c) {
@@ -52,14 +54,9 @@ class Ecliptic {
 	 * @returns
 	 */
 	calcEclipticBy(arr, dt = this.dt) {
-		let X = arr
-			.map((XIndex) => {
-				return this.calcPeriodicTerm(XIndex, dt);
-			})
-			.reduceRight((acc, next) => {
-				return acc * dt + next;
-			}, 0);
-
+		const X = arr.reduceRight((acc, next) => {
+			return acc * dt + this.calcPeriodicTerm(next, dt);
+		}, 0);
 		return X;
 	}
 
@@ -151,8 +148,8 @@ class Ecliptic {
 	 * @param {*} dt
 	 * @returns
 	 */
-	longitudeNutationOffset(jde = this.jd) {
-		return new Nutation(jde).longitude();
+	longitudeNutationOffset() {
+		return this.nutation.longitude();
 	}
 
 	/**
@@ -160,8 +157,8 @@ class Ecliptic {
 	 * @param {*} dt
 	 * @returns
 	 */
-	latitudeNutationOffset(jde = this.jd) {
-		return new Nutation(jde).obliquity();
+	latitudeNutationOffset() {
+		return this.nutation.obliquity();
 	}
 
 	/**
@@ -180,7 +177,5 @@ class Ecliptic {
 		return l;
 	}
 }
-
-Ecliptic.prototype.DB = VSOP87D;
 Ecliptic.prototype.RADIAN_ANGLE = 180 / Math.PI;
 module.exports = Ecliptic;

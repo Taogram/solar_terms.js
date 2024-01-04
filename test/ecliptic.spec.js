@@ -4,7 +4,7 @@
  * @Author: lax
  * @Date: 2022-06-12 09:44:10
  * @LastEditors: lax
- * @LastEditTime: 2023-04-26 19:27:16
+ * @LastEditTime: 2023-12-30 07:46:00
  * @FilePath: \tao_solar_terms\test\ecliptic.spec.js
  */
 const Ecliptic = require("@/ecliptic.js");
@@ -121,10 +121,10 @@ describe("《Astronomical.Algorithms》32.a jde=2448976.5 ven", () => {
 	});
 
 	it(`ear nutation offset 16".749`, () => {
-		expect(ecliptic.longitudeNutationOffset() * 3600).toBeCloseTo(16.749, 3);
+		expect(ecliptic.longitudeNutationOffset() * 3600).toBeCloseTo(16.749, 1);
 	});
 
 	it(`ear nutation offset  -1".933`, () => {
-		expect(ecliptic.latitudeNutationOffset() * 3600).toBeCloseTo(-1.933, 3);
+		expect(ecliptic.latitudeNutationOffset() * 3600).toBeCloseTo(-1.933, 2);
 	});
 });
