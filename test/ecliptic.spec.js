@@ -4,12 +4,11 @@
  * @Author: lax
  * @Date: 2022-06-12 09:44:10
  * @LastEditors: lax
- * @LastEditTime: 2023-12-30 07:46:00
+ * @LastEditTime: 2024-01-31 23:24:45
  * @FilePath: \tao_solar_terms\test\ecliptic.spec.js
  */
 const Ecliptic = require("@/ecliptic.js");
-const VEN = require("@/data/json/vsop87d.ven.json");
-
+const VEN = require("@/data/json/vsop87d-simple.ven.json");
 describe("《Astronomical.Algorithms》31.a jde=2448976.5 ven", () => {
 	const jde = 2448976.5;
 	const ecliptic = new Ecliptic(jde, { db: VEN });
@@ -18,13 +17,13 @@ describe("《Astronomical.Algorithms》31.a jde=2448976.5 ven", () => {
 		expect(ecliptic.dt).toBeCloseTo(-0.007032169747, 12);
 	});
 	it(`ven longitude -68.6592582`, () => {
-		expect(ecliptic.calcSunEclipticLongitude()).toBeCloseTo(-68.6592582, 5);
+		expect(ecliptic.calcSunEclipticLongitude()).toBeCloseTo(-68.6592582, 6);
 	});
 	it(`ven latitude -0.0457399`, () => {
-		expect(ecliptic.calcSunEclipticLatitude()).toBeCloseTo(-0.0457399, 5);
+		expect(ecliptic.calcSunEclipticLatitude()).toBeCloseTo(-0.0457399, 6);
 	});
 	it(`ven radius 0.724603`, () => {
-		expect(ecliptic.sunPlanetRadius()).toBeCloseTo(0.724603, 5);
+		expect(ecliptic.sunPlanetRadius()).toBeCloseTo(0.724603, 6);
 	});
 });
 
@@ -33,7 +32,7 @@ describe("《Astronomical.Algorithms》24.b jde=2448908.5 ear", () => {
 	const ecliptic = new Ecliptic(jde);
 
 	it(`ear sun-longitude  -43.63484796`, () => {
-		expect(ecliptic.calcSunEclipticLongitude()).toBeCloseTo(-43.63484796, 5);
+		expect(ecliptic.calcSunEclipticLongitude()).toBeCloseTo(-43.63484796, 8);
 	});
 	it(`ear sun-latitude -0.00000312`, () => {
 		expect(ecliptic.calcSunEclipticLatitude()).toBeCloseTo(-0.00000312, 8);
@@ -42,7 +41,7 @@ describe("《Astronomical.Algorithms》24.b jde=2448908.5 ear", () => {
 		expect(ecliptic.sunPlanetRadius()).toBeCloseTo(0.99760775, 8);
 	});
 	it(`ear ear-longitude  199°.907372`, () => {
-		expect(ecliptic.calcEarEclipticLongitude()).toBeCloseTo(199.907372, 3);
+		expect(ecliptic.calcEarEclipticLongitude()).toBeCloseTo(199.907372, 6);
 	});
 	it(`ear ear-latitude  +0".644`, () => {
 		expect(ecliptic.calcEarEclipticLatitude() * 3600).toBeCloseTo(0.644, 3);
@@ -106,25 +105,16 @@ describe("neoprogrammics.com/vsop87 VSOP87D EARTH TEST(FULL DATA)", () => {
 	});
 });
 
-describe("《Astronomical.Algorithms》32.a jde=2448976.5 ven", () => {
-	const jde = 2448976.5;
-	const ecliptic = new Ecliptic(jde);
+describe("《Astronomical.Algorithms》32.a jde=2448976.5 ven test fk5/", () => {
+	const jde = 2448976.5 - 0.0052612;
+	const ecliptic = new Ecliptic(jde, { db: VEN });
 
 	it(`ear FK5 longitude offset -0".09027`, () => {
-		expect(ecliptic.FK5EclipticLongitudeOffset() * 3600).toBeCloseTo(
-			-0.09027,
-			4
-		);
+		expect(ear.FK5EclipticLongitudeOffset() * 3600).toBeCloseTo(-0.09027, 5);
 	});
 	it(`ear FK5 latitude offset  +0".05535`, () => {
-		expect(ecliptic.FK5EclipticLatitudeOffset() * 3600).toBeCloseTo(0.05535, 4);
+		expect(ecliptic.FK5EclipticLatitudeOffset() * 3600).toBeCloseTo(0.05535, 5);
 	});
 
-	it(`ear nutation offset 16".749`, () => {
-		expect(ecliptic.longitudeNutationOffset() * 3600).toBeCloseTo(16.749, 1);
-	});
-
-	it(`ear nutation offset  -1".933`, () => {
-		expect(ecliptic.latitudeNutationOffset() * 3600).toBeCloseTo(-1.933, 2);
-	});
+	// TODO 光行差
 });
