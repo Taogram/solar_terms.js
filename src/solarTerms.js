@@ -4,7 +4,7 @@
  * @Author: lax
  * @Date: 2022-06-23 20:15:00
  * @LastEditors: lax
- * @LastEditTime: 2023-04-15 21:37:50
+ * @LastEditTime: 2024-02-22 00:30:43
  * @FilePath: \tao_solar_terms\src\solarTerms.js
  */
 const Julian = require("julian.js");
@@ -24,10 +24,10 @@ class SolarTerms {
 		m = m > 12 ? m - 12 : m;
 
 		if (angle % 15 === 0 && angle % 30 !== 0) {
-			return Julian.DT$JD(year, m, 6, 12, 0, 0);
+			return Julian.TD$JD(year, m, 6, 12, 0, 0);
 		}
 
-		return Julian.DT$JD(year, m, 20, 12, 0, 0);
+		return Julian.TD$JD(year, m, 20, 12, 0, 0);
 	}
 
 	getSolarTerms(year = this.year, angle = 0) {
@@ -57,7 +57,7 @@ class SolarTerms {
 			165, 180, 195, 210, 225, 240, 255, 270,
 		].map((angle) => {
 			const jd = this.getSolarTerms(year, angle);
-			const UTC = Julian.JD$UTC(jd);
+			const UTC = Julian.JD$UTC(jd, Julian.algorithm.DEFAULT);
 			return UTC;
 		});
 	}

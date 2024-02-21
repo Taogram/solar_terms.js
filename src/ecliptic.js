@@ -4,7 +4,7 @@
  * @Author: lax
  * @Date: 2021-12-20 13:33:23
  * @LastEditors: lax
- * @LastEditTime: 2024-01-31 23:30:21
+ * @LastEditTime: 2024-02-21 22:28:44
  * @FilePath: \tao_solar_terms\src\ecliptic.js
  */
 
@@ -94,7 +94,7 @@ class Ecliptic {
 	/**
 	 * 计算地心黄经
 	 * @param {sunLongitude} 日心黄经
-	 * @returns {earLongitude} l
+	 * @returns {ang} l
 	 */
 	calcEarEclipticLongitude(sun = this.calcSunEclipticLongitude()) {
 		return this.circle(sun * this.RADIAN_ANGLE + 180);
@@ -103,50 +103,35 @@ class Ecliptic {
 	/**
 	 * 计算地心黄纬
 	 * @param {sunLatitude} 日心黄纬
-	 * @returns {earLatitude} b
+	 * @returns {ang} b
 	 */
 	calcEarEclipticLatitude(sun = this.calcSunEclipticLatitude()) {
 		return this.circle(-(sun * this.RADIAN_ANGLE));
 	}
 
-	FK5EclipticL(dt = this.dt) {
-		const T = dt * 10;
-		const L = this.calcSunEclipticLongitude(dt);
-		let dash = L - T * 1.397 - 0.00031 * T * T;
-		dash /= this.RADIAN_ANGLE;
-		return dash;
-	}
-
 	/**
 	 *VSOP87->TF5坐标系 日心黄经
 	 * @param {*} dt
-	 * @returns
+	 * @returns {ang} offset
 	 */
-	FK5EclipticLongitudeOffset(dt = this.dt) {
-		const B = this.calcSunEclipticLatitude(dt);
-		const dash = this.FK5EclipticL(dt);
-		return (
-			(-0.09033 +
-				0.03916 *
-					(Math.cos(dash) + Math.sin(dash)) *
-					Math.tan(B / this.RADIAN_ANGLE)) /
-			3600.0
-		);
+	FK5EclipticLongitudeOffset() {
+		return -0.09033 / 3600;
 	}
 
 	/**
 	 * VSOP87->TF5坐标系 日心黄纬
 	 * @param {*} dt
-	 * @returns
+	 * @returns {ang} offset
 	 */
-	FK5EclipticLatitudeOffset(dt = this.dt) {
-		const dash = this.FK5EclipticL(dt);
+	FK5EclipticLatitudeOffset(l = this.calcEarEclipticLongitude()) {
+		const T = this.dt * 10;
+		let dash = l - T * 1.397 - 0.00031 * T * T;
+		dash /= this.RADIAN_ANGLE;
 		return (0.03916 * (Math.cos(dash) - Math.sin(dash))) / 3600.0;
 	}
 
 	/**
-	 * 章动修正
-	 * @param {*} dt
+	 * 章动修正 longitude
 	 * @returns
 	 */
 	longitudeNutationOffset() {
@@ -154,17 +139,22 @@ class Ecliptic {
 	}
 
 	/**
-	 * 章动修正
-	 * @param {*} dt
+	 * 章动修正 latitude
 	 * @returns
 	 */
 	latitudeNutationOffset() {
 		return this.nutation.obliquity();
 	}
 
+	longitudeLightOffset() {
+		// if (integrity) {
+		// 	return 0;
+		// }
+		return -20.4898 / this.sunPlanetRadius() / 3600.0;
+	}
+
 	/**
 	 * 获取太阳地心视黄经
-	 * @param {*} jd
 	 * @returns
 	 */
 	getSunEclipticLongitude(integrity = this.integrity) {
@@ -174,7 +164,7 @@ class Ecliptic {
 		// ->nutation
 		l += this.longitudeNutationOffset();
 		// TODO光行差
-		l -= 20.4898 / this.sunPlanetRadius() / 3600.0;
+		l += this.longitudeLightOffset();
 		// TODO周年视差
 		return l;
 	}

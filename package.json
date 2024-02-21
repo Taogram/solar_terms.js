@@ -19,7 +19,7 @@
   ],
   "main": "dist/index.js",
   "dependencies": {
-    "julian.js": "^1.1.0",
+    "julian.js": "^1.6.0",
     "nutation.js": "^0.4.0"
   },
   "devDependencies": {
