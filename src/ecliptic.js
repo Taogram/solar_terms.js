@@ -4,7 +4,7 @@
  * @Author: lax
  * @Date: 2021-12-20 13:33:23
  * @LastEditors: lax
- * @LastEditTime: 2024-02-21 22:28:44
+ * @LastEditTime: 2024-07-23 22:44:04
  * @FilePath: \tao_solar_terms\src\ecliptic.js
  */
 
@@ -163,7 +163,7 @@ class Ecliptic {
 		if (integrity) l += this.FK5EclipticLongitudeOffset();
 		// ->nutation
 		l += this.longitudeNutationOffset();
-		// TODO光行差
+		// ->light
 		l += this.longitudeLightOffset();
 		// TODO周年视差
 		return l;

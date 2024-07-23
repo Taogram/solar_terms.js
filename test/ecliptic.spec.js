@@ -4,7 +4,7 @@
  * @Author: lax
  * @Date: 2022-06-12 09:44:10
  * @LastEditors: lax
- * @LastEditTime: 2024-02-21 22:32:10
+ * @LastEditTime: 2024-07-23 22:15:05
  * @FilePath: \tao_solar_terms\test\ecliptic.spec.js
  */
 const Ecliptic = require("@/ecliptic.js");
@@ -105,7 +105,7 @@ describe("neoprogrammics.com/vsop87 VSOP87D EARTH TEST(FULL DATA)", () => {
 	});
 });
 
-describe("《Astronomical.Algorithms》24. jde=2448908.5 ear test all", () => {
+describe("《Astronomical.Algorithms》24.b jde=2448908.5 ear test all", () => {
 	const jde = 2448908.5;
 	const ecliptic = new Ecliptic(jde, { nutation: { iau: "1980" } });
 

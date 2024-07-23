@@ -4,7 +4,7 @@
  * @Author: lax
  * @Date: 2022-06-23 20:15:00
  * @LastEditors: lax
- * @LastEditTime: 2024-02-22 00:30:43
+ * @LastEditTime: 2024-07-23 22:41:44
  * @FilePath: \tao_solar_terms\src\solarTerms.js
  */
 const Julian = require("julian.js");
@@ -17,6 +17,7 @@ class SolarTerms {
 	constructor(p = {}) {
 		this.eOp = p.eclipticOptions || {};
 		this.year = p.year || new Date().getFullYear();
+		this.deltaT = p.deltaT === undefined ? false : !!p.deltaT;
 	}
 
 	getBaseSection(year = this.year, angle = 0) {
@@ -57,7 +58,14 @@ class SolarTerms {
 			165, 180, 195, 210, 225, 240, 255, 270,
 		].map((angle) => {
 			const jd = this.getSolarTerms(year, angle);
-			const UTC = Julian.JD$UTC(jd, Julian.algorithm.DEFAULT);
+			const UTC = Julian.JD$UTC(
+				jd,
+				this.deltaT
+					? Julian.algorithm.DEFAULT
+					: () => {
+							return 0;
+					  }
+			);
 			return UTC;
 		});
 	}
